@@ -2,6 +2,11 @@ name: build-test
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        default: '0.0.0'
 
 permissions:
   contents: write
@@ -25,8 +30,8 @@ jobs:
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
-          distribution: goreleaser
-          version: latest
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 通过环境变量传递版本号（需在.goreleaser.yaml中配置）
+          VERSION: ${{ github.event.inputs.version }}
