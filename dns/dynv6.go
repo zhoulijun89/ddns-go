@@ -2,9 +2,9 @@ package dns
 
 import (
 	"bytes"
+	"ddns-go/v6/config"
+	"ddns-go/v6/util"
 	"encoding/json"
-	"github.com/jeessy2/ddns-go/v6/config"
-	"github.com/jeessy2/ddns-go/v6/util"
 	"net/http"
 	"strconv"
 	"strings"

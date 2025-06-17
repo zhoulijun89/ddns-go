@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -12,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/jeessy2/ddns-go/v6/util"
+	"ddns-go/v6/util"
 	passwordvalidator "github.com/wagslane/go-password-validator"
 	"gopkg.in/yaml.v3"
 )
@@ -22,6 +23,8 @@ var Ipv4Reg = regexp.MustCompile(`((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3
 
 // Ipv6Reg IPv6正则
 var Ipv6Reg = regexp.MustCompile(`((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))`)
+
+var HttpReceiveIp = sync.Map{}
 
 // DnsConfig 配置
 type DnsConfig struct {
@@ -65,6 +68,10 @@ type Config struct {
 	NotAllowWanAccess bool
 	// 语言
 	Lang string
+}
+
+type IpReceive struct {
+	Ipv4 string
 }
 
 // ConfigCache ConfigCache
@@ -308,6 +315,15 @@ func (conf *DnsConfig) getAddrFromCmd(addrType string) string {
 	return result
 }
 
+func (conf *DnsConfig) getAddrFromHttpEndPoint() string {
+	ip, ok := HttpReceiveIp.Load("ipv4")
+	if !ok || ip == nil {
+		return ""
+	} else {
+		return fmt.Sprint(ip)
+	}
+}
+
 // GetIpv4Addr 获得IPv4地址
 func (conf *DnsConfig) GetIpv4Addr() string {
 	// 判断从哪里获取IP
@@ -321,6 +337,9 @@ func (conf *DnsConfig) GetIpv4Addr() string {
 	case "cmd":
 		// 从命令行获取 IP
 		return conf.getAddrFromCmd("IPv4")
+	case "httpEndPoint":
+		// 从http接口获取
+		return conf.getAddrFromHttpEndPoint()
 	default:
 		log.Println("IPv4's get IP method is unknown")
 		return "" // unknown type

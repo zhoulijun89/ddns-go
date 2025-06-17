@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/jeessy2/ddns-go/v6/config"
-	"github.com/jeessy2/ddns-go/v6/util"
+	"ddns-go/v6/config"
+	"ddns-go/v6/util"
 )
 
 // TrafficRoute 火山引擎DNS服务
@@ -63,7 +63,7 @@ type TrafficRouteListZonesParams struct {
 	Key string `json:"Key,omitempty"` // 获取包含特定关键字的域名(默认模糊搜索)
 }
 
-// TrafficRouteListZonesResp 
+// TrafficRouteListZonesResp
 type TrafficRouteListZonesResp struct {
 	ZID int `json:"ZID"` // 域名ID
 }

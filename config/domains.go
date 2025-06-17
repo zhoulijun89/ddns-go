@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/jeessy2/ddns-go/v6/util"
+	"ddns-go/v6/util"
 	"golang.org/x/net/idna"
 	"golang.org/x/net/publicsuffix"
 )

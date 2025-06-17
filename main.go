@@ -15,11 +15,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jeessy2/ddns-go/v6/config"
-	"github.com/jeessy2/ddns-go/v6/dns"
-	"github.com/jeessy2/ddns-go/v6/util"
-	"github.com/jeessy2/ddns-go/v6/util/update"
-	"github.com/jeessy2/ddns-go/v6/web"
+	"ddns-go/v6/config"
+	"ddns-go/v6/dns"
+	"ddns-go/v6/util"
+	"ddns-go/v6/util/update"
+	"ddns-go/v6/web"
 	"github.com/kardianos/service"
 )
 
@@ -191,6 +191,7 @@ func runWebServer() error {
 	http.HandleFunc("/clearLog", web.Auth(web.ClearLog))
 	http.HandleFunc("/webhookTest", web.Auth(web.WebhookTest))
 	http.HandleFunc("/logout", web.Auth(web.Logout))
+	http.HandleFunc("/receiver", web.Receiver)
 
 	util.Log("监听 %s", *listen)
 

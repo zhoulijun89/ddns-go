@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jeessy2/ddns-go/v6/config"
-	"github.com/jeessy2/ddns-go/v6/util"
+	"ddns-go/v6/config"
+	"ddns-go/v6/util"
 )
 
 // ViewFunc func

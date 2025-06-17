@@ -1,4 +1,4 @@
-module github.com/jeessy2/ddns-go/v6
+module ddns-go/v6
 
 go 1.23.6
 

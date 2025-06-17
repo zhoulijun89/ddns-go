@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/jeessy2/ddns-go/v6/config"
-	"github.com/jeessy2/ddns-go/v6/util"
+	"ddns-go/v6/config"
+	"ddns-go/v6/util"
 )
 
 func WebhookTest(writer http.ResponseWriter, request *http.Request) {
