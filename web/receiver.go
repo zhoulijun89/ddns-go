@@ -1,7 +1,9 @@
 package web
 
 import (
+	"crypto/md5"
 	"ddns-go/v6/config"
+	"encoding/hex"
 	"fmt"
 	"net"
 	"net/http"
@@ -9,14 +11,23 @@ import (
 )
 
 func Receiver(writer http.ResponseWriter, request *http.Request) {
-	token := request.Header.Get("auth")
-	time := request.PostFormValue("time")
+	sign := request.URL.Query().Get("sign")
+	time := request.URL.Query().Get("time")
 	// todo 验证token
-
+	check := MD5(time + "your_secret_key_bobo")
+	if sign != check {
+		returnOK(writer, fmt.Sprint("更新成功"), nil)
+		return
+	}
 	ipaddr := getClientIP(request)
 	config.HttpReceiveIp.Store("ipv4", ipaddr)
-	fmt.Printf("收到请求: token:[%s],time:[%s],ipaddr:[%s] ", token, time, ipaddr)
+	fmt.Printf("收到请求: sign:[%s],time:[%s],ipaddr:[%s] ", sign, time, ipaddr)
 	returnOK(writer, fmt.Sprintf("更新成功[%s]", ipaddr), nil)
+}
+
+func MD5(text string) string {
+	hash := md5.Sum([]byte(text))
+	return hex.EncodeToString(hash[:])
 }
 
 func getClientIP(r *http.Request) string {
