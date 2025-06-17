@@ -15,27 +15,27 @@ builds:
     flags:
       - -trimpath
     goos:
-      - android
+#      - android
       - linux
-      - windows
-      - darwin
-      - freebsd
+#      - windows
+#      - darwin
+#      - freebsd
     goarch:
-      - '386'
+#      - '386'
       - amd64
-      - arm
-      - arm64
-      - mips
-      - mipsle
-      - mips64
-      - mips64le
+#      - arm
+#      - arm64
+#      - mips
+#      - mipsle
+#      - mips64
+#      - mips64le
     goarm:
-      - '5'
-      - '6'
-      - '7'
+#      - '5'
+#      - '6'
+#      - '7'
     gomips:
-      - hardfloat
-      - softfloat
+#      - hardfloat
+#      - softfloat
     ignore:
       # we only need the arm64 build on android
       - goos: android
@@ -90,7 +90,7 @@ dockers:
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
-    
+
   - image_templates:
       - "{{ .Env.DOCKER_USERNAME }}/ddns-go:{{ .Tag }}-arm64"
       - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
@@ -126,7 +126,7 @@ docker_manifests:
       - "{{ .Env.DOCKER_USERNAME }}/ddns-go:{{ .Tag }}-amd64"
       - "{{ .Env.DOCKER_USERNAME }}/ddns-go:{{ .Tag }}-arm64"
       - "{{ .Env.DOCKER_USERNAME }}/ddns-go:{{ .Tag }}-armv7"
-    
+
   - name_template: "{{ .Env.DOCKER_USERNAME }}/ddns-go:latest"
     image_templates:
       - "{{ .Env.DOCKER_USERNAME }}/ddns-go:{{ .Tag }}-amd64"
@@ -138,7 +138,7 @@ docker_manifests:
       - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
       - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-arm64"
       - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-armv7"
-    
+
   - name_template: "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:latest"
     image_templates:
       - "ghcr.io/{{ tolower .Env.GITHUB_REPOSITORY }}:{{ .Tag }}-amd64"
