@@ -30,7 +30,7 @@ jobs:
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
-          args: release --clean  --skip-validate
+          args: release --clean --skip=validate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # 通过环境变量传递版本号（需在.goreleaser.yaml中配置）
